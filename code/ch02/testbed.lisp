@@ -1,4 +1,6 @@
-; To run, call (setup), (init), and then, e.g., (runs 2000 1000 .1)
+;; To run, call (setup), (init), and then, e.g., (runs 2000 1000 .1)
+(load "../utilities.lisp")
+(use-package 'rss-utilities)
 
 (defvar n)
 (defvar epsilon .1)
