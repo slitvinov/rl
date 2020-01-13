@@ -1,5 +1,3 @@
-;-*- Mode: Lisp; Package: (rss-utilities :use (common-lisp ccl) :nicknames (:ut)) -*-
-
 (defpackage :rss-utilities
   (:use :common-lisp :ccl)
   (:nicknames :ut))
@@ -295,7 +293,7 @@
 
 (export 'copy-of-standard-random-state)
 (defun copy-of-standard-random-state ()
-  (make-random-state #.(RANDOM-STATE 64497 9)))
+  (make-random-state #.(ccl::random-mrg31k3p-state)))
 
 (export 'permanent-data)
 (export 'permanent-record-file)
@@ -407,7 +405,7 @@
 (export 'standardize-random-state)
 (export 'advance-random-state)
 
-(defvar standard-random-state #.(RANDOM-STATE 64497 9))
+(defvar standard-random-state #.(ccl::random-mrg31k3p-state))
 #|
         #S(FUTURE-COMMON-LISP:RANDOM-STATE
             :ARRAY
