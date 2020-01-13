@@ -9,7 +9,7 @@
 
     git clone https://aur.archlinux.org/ccl.git
     cd ccl
-    makepkg
+    makepkg -i
 
 # References
 
