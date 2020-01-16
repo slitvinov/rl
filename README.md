@@ -11,6 +11,10 @@
     cd ccl
     makepkg -i
 
+## emacs
+
+    (setq inferior-lisp-program "ccl")
+
 # References
 
 - A Debian Package for Clozure Common Lisp https://mr.gy/blog/clozure-cl-deb.html
