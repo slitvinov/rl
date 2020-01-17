@@ -29,6 +29,8 @@ Changes:
 ----------------------------------------------------------------------*/
                           
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define min(x, y)               ((x <= y) ? x : y)
 #define max(x, y)	        ((x >= y) ? x : y)
@@ -46,7 +48,10 @@ Changes:
 #define MAX_STEPS        100000
 
 typedef float vector[N_BOXES];
+static int get_box(float x, float x_dot, float theta, float theta_dot);
+static void cart_pole(int action, float *x, float *x_dot, float *theta, float *theta_dot);
 
+int
 main()
 {
   float x,			/* cart position, meters */
@@ -171,10 +176,8 @@ main()
 #define TAU 0.02		  /* seconds between state updates */
 #define FOURTHIRDS 1.3333333333333
 
-
-cart_pole(action, x, x_dot, theta, theta_dot)
-int action;
-float *x, *x_dot, *theta, *theta_dot;
+static void
+cart_pole(int action, float *x, float *x_dot, float *theta, float *theta_dot)
 {
     float xacc,thetaacc,force,costheta,sintheta,temp;
 
@@ -210,8 +213,8 @@ float *x, *x_dot, *theta, *theta_dot;
 #define twelve_degrees 0.2094384
 #define fifty_degrees 0.87266
 
-get_box(x,x_dot,theta,theta_dot)
-float x,x_dot,theta,theta_dot;
+static int
+get_box(float x, float x_dot, float theta, float theta_dot)
 {
   int box=0;
 
