@@ -1,0 +1,5 @@
+Q[1]: 0;
+buildq([n: m - 1],
+  Q[m]:= Q[n] + 1/n*(R[n] - Q[n])), eval;
+
+Q[10], factor;

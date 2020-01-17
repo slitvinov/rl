@@ -1,0 +1,7 @@
+Q[1]: Q1;
+buildq([n: m - 1],
+  Q[m]:= Q[n] + al*(R[n] - Q[n])), eval;
+
+e: Q[10], expand;
+coeff(e, Q1), factor;
+coeff(e, R[3]), factor;
