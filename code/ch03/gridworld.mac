@@ -1,0 +1,23 @@
+declare(g, constant);
+ratprint: false $
+
+n: 5;
+/*x[1, 0]: 10 + g * x[4, 0];
+x[3, 0]: 5  + g * x[3, 2]; */
+
+g: 9/10;
+for i: 0 thru n - 1 do x[i, -1]: x[i, n]: x[-1, i]: x[n, i]: -1;
+
+v[1, 0] : 10 + g * x[4, 0];
+v[3, 0] : 5 + g * x[3, 2];
+v[i, j] := g * (x[i + 1, j] + x[i - 1, j] + x[i, j + 1] + x[i, j - 1]) / 4;
+
+e: [];
+for i: 0 thru n - 1 do
+for j: 0 thru n - 1 do
+push(x[i, j] - v[i, j], e);
+
+a: listofvars(e);
+coefmatrix(e, a);
+
+s: linsolve(e, a), numer;
