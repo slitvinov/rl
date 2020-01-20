@@ -1,0 +1,33 @@
+ratprint: false $
+
+n: 4;
+
+act: [ [0, 1], [1, 0], [0, -1], [-1, 0] ];
+A: [[0, 0], [n - 1, n - 1]];
+
+nxt(x, y, a):= block([i, j],
+i: x + a[1],
+j: y + a[2],
+if i < 0 or i >= n or j < 0 or j >= n then [x, y] else [i, j]);
+
+w(i, j) :=
+if member([i, j], A) then 0 else
+block([s, x, y, r],
+s: 0,
+for a in act do ([x, y]: nxt(i, j, a),
+  s: s - 1 + V[x, y]),
+s/length(act));
+
+e: [];
+a: [];
+for j: 0 thru n - 1 do
+for i: 0 thru n - 1 do (
+  push(V[i, j], a),
+  push(w(i, j) - V[i, j], e));
+
+s: linsolve(e, a)$
+
+for j: 0 thru n - 1 do (
+for i: 0 thru n - 1 do
+printf(true, "~3,d ", ev(V[i, j], s)),
+printf(true, "~%"));

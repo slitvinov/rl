@@ -1,0 +1,12 @@
+e0: [X = 1 + g*L, L = g*X ];
+e1: [X = g*R, R = 2 + X];
+
+s0: linsolve(e0, [X, L]);
+s1: linsolve(e1, [X, R]);
+
+X0: X, s0;
+X1: X, s1;
+
+draw2d(explicit(X0, g, 0, 7/10), 'color = red, explicit(X1, g, 0, 7/10));
+
+solve(X0 - X1, g), numer;
