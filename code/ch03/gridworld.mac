@@ -1,5 +1,3 @@
-kill(all);
-declare(g, constant);
 ratprint: false $
 
 n: 5;
