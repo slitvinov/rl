@@ -33,7 +33,7 @@ def step(state, action):
         reward = 0
     return next_state, reward
 
-def main():
+def rnd():
     value = np.zeros((WORLD_SIZE, WORLD_SIZE))
     while True:
         new_value = np.zeros_like(value)
@@ -47,7 +47,23 @@ def main():
         else:
             value = new_value
 
-v = main()
+def opt():
+    value = np.zeros((WORLD_SIZE, WORLD_SIZE))
+    while True:
+        new_value = np.zeros_like(value)
+        for i in range(WORLD_SIZE):
+            for j in range(WORLD_SIZE):
+                values = []
+                for action in ACTIONS:
+                    (next_i, next_j), reward = step([i, j], action)
+                    values.append(reward + DISCOUNT * value[next_i, next_j])
+                new_value[i, j] = np.max(values)
+        if np.sum(np.abs(value - new_value)) < EPS:
+            return new_value
+        else:
+            value = new_value
+
+v = opt()
 for i in range(WORLD_SIZE):
     for j in range(WORLD_SIZE):
         sys.stdout.write("%5.2f " % v[i, j])
