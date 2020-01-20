@@ -8,8 +8,8 @@ g: 9/10;
 act: [ [0, 1], [1, 0], [0, -1], [-1, 0] ];
 
 nxt(x, y, u, v):= block([i, j],
-if x = 1 and y = 0 then [10, 4, 0]
-else if x = 3 and y = 0 then [5, 3, 2]
+if x = 1 and y = 0 then [10, x, 4]
+else if x = 3 and y = 0 then [5, x, 2]
 else (
 i: x + u,
 j: y + v,
@@ -35,5 +35,5 @@ s: linsolve(e, a), numer;
 
 for j: 0 thru n - 1 do (
 for i: 0 thru n - 1 do
-printf(true, "~4,1f ", ev(V[i, j], s)),
+printf(true, "~5,2f ", ev(V[i, j], s)),
 printf(true, "~%"));
