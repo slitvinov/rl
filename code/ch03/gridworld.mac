@@ -1,23 +1,39 @@
+kill(all);
 declare(g, constant);
 ratprint: false $
 
 n: 5;
-/*x[1, 0]: 10 + g * x[4, 0];
-x[3, 0]: 5  + g * x[3, 2]; */
-
 g: 9/10;
-for i: 0 thru n - 1 do x[i, -1]: x[i, n]: x[-1, i]: x[n, i]: -1;
 
-v[1, 0] : 10 + g * x[4, 0];
-v[3, 0] : 5 + g * x[3, 2];
-v[i, j] := g * (x[i + 1, j] + x[i - 1, j] + x[i, j + 1] + x[i, j - 1]) / 4;
+act: [ [0, 1], [1, 0], [0, -1], [-1, 0] ];
+
+nxt(x, y, u, v):= block([i, j],
+if x = 1 and y = 0 then [10, 4, 0]
+else if x = 3 and y = 0 then [5, 3, 2]
+else (
+i: x + u,
+j: y + v,
+if i < 0 or i >= n or j < 0 or j >= n then [-1, x, y] else [0, i, j]));
+
+w[i, j] := block([s, x, y, u, v, r],
+s: 0,
+for a in act do
+(
+  [u, v]: a,
+  [r, x, y]: nxt(i, j, u, v),
+  s: s + 1/4*r + g/4*V[x, y]),
+s);
 
 e: [];
-for i: 0 thru n - 1 do
+a: [];
 for j: 0 thru n - 1 do
-push(x[i, j] - v[i, j], e);
-
-a: listofvars(e);
-coefmatrix(e, a);
+for i: 0 thru n - 1 do (
+  push(V[i, j], a),
+  push(w[i, j] - V[i, j], e));
 
 s: linsolve(e, a), numer;
+
+for j: 0 thru n - 1 do (
+for i: 0 thru n - 1 do
+printf(true, "~4,1f ", ev(V[i, j], s)),
+printf(true, "~%"));
