@@ -6,30 +6,31 @@ n: 5;
 g: 9/10;
 
 act: [ [0, 1], [1, 0], [0, -1], [-1, 0] ];
+A: [[1, 0], [10, 1, 4]];
+B: [[3, 0], [5, 3, 2]];
 
-nxt(x, y, u, v):= block([i, j],
-if x = 1 and y = 0 then [10, x, 4]
-else if x = 3 and y = 0 then [5, x, 2]
+nxt(x, y, a):= block([i, j],
+if [x, y] = A[1] then A[2]
+else if [x, y] = B[1] then B[2]
 else (
-i: x + u,
-j: y + v,
+i: x + a[1],
+j: y + a[2],
 if i < 0 or i >= n or j < 0 or j >= n then [-1, x, y] else [0, i, j]));
 
-w[i, j] := block([s, x, y, u, v, r],
+w(i, j) := block([s, x, y, r],
 s: 0,
 for a in act do
 (
-  [u, v]: a,
-  [r, x, y]: nxt(i, j, u, v),
-  s: s + 1/4*r + g/4*V[x, y]),
-s);
+  [r, x, y]: nxt(i, j, a),
+  s: s + r + g*V[x, y]),
+s/length(act));
 
 e: [];
 a: [];
 for j: 0 thru n - 1 do
 for i: 0 thru n - 1 do (
   push(V[i, j], a),
-  push(w[i, j] - V[i, j], e));
+  push(w(i, j) - V[i, j], e));
 
 s: linsolve(e, a), numer;
 
