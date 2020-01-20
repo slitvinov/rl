@@ -24,7 +24,7 @@ def step(state, action):
         return A_PRIME_POS, 10
     if state == B_POS:
         return B_PRIME_POS, 5
-    next_state = ( state[0] + action[0], state[1] + action[1] )
+    next_state = (state[0] + action[0], state[1] + action[1])
     x, y = next_state
     if x < 0 or x >= WORLD_SIZE or y < 0 or y >= WORLD_SIZE:
         reward = -1.0
@@ -33,7 +33,7 @@ def step(state, action):
         reward = 0
     return next_state, reward
 
-def figure_3_2():
+def main():
     value = np.zeros((WORLD_SIZE, WORLD_SIZE))
     while True:
         new_value = np.zeros_like(value)
@@ -47,7 +47,7 @@ def figure_3_2():
         else:
             value = new_value
 
-v = figure_3_2()
+v = main()
 for i in range(WORLD_SIZE):
     for j in range(WORLD_SIZE):
         sys.stdout.write("%5.2f " % v[i, j])
