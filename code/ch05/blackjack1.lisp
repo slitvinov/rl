@@ -94,22 +94,22 @@
 
 (defvar w)
 (defvar array (make-array '(10 10)))
-(defun gr (source ace &optional (arr array))
-  (loop with ace = (if ace 1 0)
-	for i below 10 do
-	(loop for j below 10 do
-	      (setf (aref arr i j) (aref source (+ i 1) (+ j 12) ace))))
-  (g::graph-surface w arr))
+;; (defun gr (source ace &optional (arr array))
+;;   (loop with ace = (if ace 1 0)
+;; 	for i below 10 do
+;; 	(loop for j below 10 do
+;; 	      (setf (aref arr i j) (aref source (+ i 1) (+ j 12) ace))))
+;;   (g::graph-surface w arr))
 
-(defun experiment ()
-  (setup)
-  (loop for count below 500
-	for ar0 = (make-array '(10 10))
-	for ar1 = (make-array '(10 10))
-	do
-	(print count)
-	(gr V nil ar0)
-	(gr V t ar1)
-	collect ar0
-	collect ar1
-	do (loop repeat 1000 do (episode))))
+;; (defun experiment ()
+;;   (setup)
+;;   (loop for count below 500
+;; 	for ar0 = (make-array '(10 10))
+;; 	for ar1 = (make-array '(10 10))
+;; 	do
+;; 	(print count)
+;; 	(gr V nil ar0)
+;; 	(gr V t ar1)
+;; 	collect ar0
+;; 	collect ar1
+;; 	do (loop repeat 1000 do (episode))))
