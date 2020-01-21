@@ -9,7 +9,7 @@
 
 ;;; R1(n1) is a 26 array giving the expected reward due to satisfied
 ;;; requests at location, given that the day starts with n1 cars at
-;;; location 1.  SImilarly for R2.
+;;; location 1.  Similarly for R2.
 
 ;;; Here we implement policy iteration.
 
