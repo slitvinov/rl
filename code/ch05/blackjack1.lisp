@@ -7,10 +7,10 @@
 
 (defvar V)
 (defvar policy)
-(defvar N)                              ; Number of returns seen for this state
-(defvar dc)                             ; count of dealer's showing card
-(defvar pc)                             ; total count of player's hand
-(defvar ace)                            ; does play have a usable ace?
+(defvar N)                    ; Number of returns seen for this state
+(defvar dc)                   ; count of dealer's showing card
+(defvar pc)                   ; total count of player's hand
+(defvar ace)                  ; does play have a usable ace?
 (defvar episode)
 
 (defun card ()
@@ -21,9 +21,9 @@
   (setq N (make-array '(11 22 2) :initial-element 0))
   (setq policy (make-array '(11 22 2) :initial-element 1))
   (loop for dc from 1 to 10 do
-	(loop for pc from 20 to 21 do
-	      (loop for ace from 0 to 1 do
-		    (setf (aref policy dc pc ace) 0)))))
+       (loop for pc from 20 to 21 do
+	    (loop for ace from 0 to 1 do
+		 (setf (aref policy dc pc ace) 0)))))
 
 (defun episode ()
   (let (dc-hidden pcard1 pcard2 outcome)
@@ -92,24 +92,27 @@
 (defun bust? ()
   (> pc 21))
 
+(defun graph-surface (arr)
+  (print arr))
+
 (defvar w)
 (defvar array (make-array '(10 10)))
-;; (defun gr (source ace &optional (arr array))
-;;   (loop with ace = (if ace 1 0)
-;; 	for i below 10 do
-;; 	(loop for j below 10 do
-;; 	      (setf (aref arr i j) (aref source (+ i 1) (+ j 12) ace))))
-;;   (g::graph-surface w arr))
+(defun gr (source ace &optional (arr array))
+  (loop with ace = (if ace 1 0)
+     for i below 10 do
+       (loop for j below 10 do
+	    (setf (aref arr i j) (aref source (+ i 1) (+ j 12) ace))))
+  (graph-surface arr))
 
-;; (defun experiment ()
-;;   (setup)
-;;   (loop for count below 500
-;; 	for ar0 = (make-array '(10 10))
-;; 	for ar1 = (make-array '(10 10))
-;; 	do
-;; 	(print count)
-;; 	(gr V nil ar0)
-;; 	(gr V t ar1)
-;; 	collect ar0
-;; 	collect ar1
-;; 	do (loop repeat 1000 do (episode))))
+(defun experiment ()
+  (setup)
+  (loop for count below 500
+     for ar0 = (make-array '(10 10))
+     for ar1 = (make-array '(10 10))
+     do
+       (print count)
+       (gr V nil ar0)
+       (gr V t ar1)
+     collect ar0
+     collect ar1
+     do (loop repeat 1000 do (episode))))

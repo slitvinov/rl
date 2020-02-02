@@ -1,0 +1,129 @@
+#!/usr/bin/sh
+
+nawk -v me=rnd '
+function ini() {
+    srand(1)
+    eps = 1e-6
+    A = -3
+    B =  3
+}
+
+function wh_ini() {
+}
+
+function wh(n,  i, j, dw, w0, al, z) {
+    al = 1e-3
+    for (;;) {
+	clear(dw)
+	copy(w, w0)
+	for (i = 0; i < n; i++) {
+	    load(i)
+	    z = Reword
+	    for (j = 0; j in Seq; j++) {
+		k = Seq[j]
+		dw[k] += al*(z - w[k])
+	    }
+	}
+	for (j in dw)
+	    w[j] += dw[j]
+	if (diff(w, w0) < eps)
+	    break
+    }
+}
+
+function wh_show() {
+    for (i = A; i <= B; i++) {
+	if (i in w)
+	    printf "%4.1e\n", w[i]
+    }
+}
+
+BEGIN {
+    ini()
+    N = 100
+    M = 10
+
+    wh_ini()
+    for (j = 0; j < M; j++) {
+	for (i = 0; i < N; i++) {
+	    sim()
+	    save(i)
+	}
+	wh(N)
+    }
+    wh_show()
+}
+
+function sim(   x, i) {
+    clear(Seq)
+    for (i = x = 0;; i++) {
+	if (x == A) {
+	    Reword = 0
+	    break
+	} else if (x == B) {
+	    Reword = 1
+	    break
+	} else {
+	    Seq[i] = x
+	    x = step(x)
+	}
+    }
+}
+
+function step(x) {
+    return x + rnd()
+}
+
+function rnd() {
+    return rand() > 1/2 ? 1 : -1
+}
+
+function clear(a) {
+    split("", a)
+}
+
+function show(   k) {
+    for (k = 0; k in Seq; k++)
+	printf "%s ", Seq[k]
+    printf "[%s]\n", Reword
+}
+
+function save(i,   k) {
+    for (k in Seq) {
+	Seqs[i, k] = Seq[k]
+    }
+    Rewords[i] = Reword
+}
+
+function load(i,   k) {
+    if (!((i, 0) in Seqs))
+	err("no seq i = %d", i)
+    clear(Seq)
+    for (k = 0; (i, k) in Seqs; k++)
+	Seq[k] = Seqs[i, k]
+    Reword = Rewords[i]
+}
+
+function msg(a, b, c, d) {
+    printf "%s: " a "\n", me, b, c, d | "cat >&2"
+}
+
+function err(a, b, c, d) {
+    msg(a, b, c, d)
+    exit(2)
+}
+
+function diff(a, b,  k, s) {
+    for (k in a) {
+	s += (a[k] - b[k])^2
+    }
+    return s
+}
+
+function copy(a, b,   k) {
+    clear(b)
+    for (k in a)
+	b[k] = a[k]
+}
+
+'
