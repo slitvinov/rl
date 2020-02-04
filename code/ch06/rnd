@@ -1,6 +1,6 @@
-"${AWK=nawk}" -v me=rnd '
+"${AWK=awk}" -v me=rnd '
 BEGIN {
-    srand(2)
+    srand(19)
     ini()
     alpha = ARGV[1] + 0
     nwalk = 5
