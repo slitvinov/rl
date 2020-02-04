@@ -4,12 +4,12 @@ import itertools
 import sys
 
 random.seed(10)
-n = 5
-global alpha
+N = 5
 global lmbd
+lmbd = 0.0
 half = 0.5
-w_ini = tuple([half] * n)
-ref = [(i + 1)/(n + 1) for i in range(n)]
+w_ini = tuple([half] * N)
+ref = [(i + 1)/(N + 1) for i in range(N)]
 eps = .000000001
 
 def step():
@@ -38,15 +38,15 @@ def process1(wset, w):
         cnt += 1
         w0 = w[:]
         for walk in wset:
-            dw = [ 0 ] * n
+            dw = [ 0 ] * N
             process0(walk, w, dw)
             for i in range(len(w)):
-                w[i] += alpha * dw[i]
-            if not good(w):
-                w = [max(0, e) for e in w]
-                w = [min(1, e) for e in w]
-                sys.stderr.write("w = %s\n" % str(w))
-                #break
+                new = w[i] + alpha * dw[i]
+                w[i] = new
+            #if not good(w):
+            #    w = [max(0, e) for e in w]
+                #w = [min(1, e) for e in w]
+                #sys.stderr.write("w = %s\n" % str(w))
         break
         e = diff(w, w0)
         if e < eps:
@@ -69,15 +69,15 @@ def process(nset, nwalk):
     return math.sqrt(ws/len(w)/nset)
 
 def walk():
-    x = n // 2
+    x = N // 2
     s = [ ]
-    while x >= 0 and x < n:
+    while x >= 0 and x < N:
         s.append(x)
         x += step()
     if x < 0:
-        return 0, s
+        return 0, s[1:]
     else:
-        return 1, s
+        return 1, s[1:]
 
 def diff(a, b):
     s = sum(abs(x - y) for x, y in zip(a, b))
@@ -93,11 +93,11 @@ def ssq(a, b):
 def sim():
     global alpha
     ans = []
-    for alpha in [5*i/100 for i in range(13)]:
-        e = process(100, 10)
-        print(e)
+    alphas = [5*i/100 for i in range(13)]
+    for alpha in alphas:
+        e = process(2000, 10)
         ans.append(e)
-    return alpha, ans
+    return alphas, ans
 
 def good(w):
     return 0 <= min(w) and max(w) <= 1
@@ -105,3 +105,7 @@ def good(w):
 def fmt(f, l):
     l = [f % e for e in l]
     return ' '.join(l)
+
+x, y = sim()
+for i, j in zip(x, y):
+    print(i, j)
