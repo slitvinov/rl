@@ -92,9 +92,8 @@ def ssq(a, b):
 
 def sim():
     global alpha
-    al = [5*i/100 for i in range(13)]
     ans = []
-    for alpha in al:
+    for alpha in [5*i/100 for i in range(13)]:
         e = process(100, 10)
         print(e)
         ans.append(e)
