@@ -1,0 +1,67 @@
+nawk -v me=rnd '
+BEGIN {
+    alpha = ARGV[1] + 0
+    nwalk = 6
+    nset = 200
+    for (k = 0; k < nset; k++) {
+        ini()
+    for (j = 0; j < nwalk; j++) {
+        clear(d)
+        for (x = 0; !(x in End); x = y) {
+            y = step(x)
+            P = w[x]
+            if (y in End)
+                P1 = End[y]
+            else
+                P1 = w[y]
+            d[x] += P1 - P
+        }
+        for (i in w)
+            w[i] += alpha * d[i]
+    }
+    print rsq(w, r)
+    }
+}
+
+function ini(   i, n, j) {
+    eps = 1e-6
+    A = -3
+    B =  3
+    End[A] = 0
+    End[B] = 1
+    n = B - A - 1
+    for (i = A + 1; i < B; i++)
+        r[i] = ((j++) + 1)/(n + 1)
+    for (i = A + 1; i < B; i++)
+        w[i] = 0.5
+}
+
+function show(a,    i) {
+    for (i = A + 1; i < B; i++) {
+        printf "%4.2f ", a[i]
+    }
+    printf "\n"
+}
+
+function rnd() {
+    return rand() > 1/2 ? 1 : -1
+}
+
+function step(x) {
+    return x + rnd()
+}
+
+function clear(a) {
+    split("", a)
+}
+
+function rsq(a, b,  k, s) {
+    s = n = 0
+    for (k in a) {
+	s += (a[k] - b[k])^2
+        n ++
+    }
+    return sqrt(s/n)
+}
+
+' "$@"
