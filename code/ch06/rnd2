@@ -1,11 +1,11 @@
 "${AWK=awk}" -v me=rnd '
 BEGIN {
-    srand(19)
+    srand(0)
     ini()
     lambda = ARGV[1]
     alpha = ARGV[2]
     nwalk = 5
-    nset = 1000
+    nset = 100
     for (k = 0; k < nset; k++) {
 	ini_w()
 	compute_w()
