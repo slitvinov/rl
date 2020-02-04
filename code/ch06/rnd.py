@@ -5,8 +5,8 @@ import sys
 
 random.seed(10)
 n = 5
-lmbd = 0.0
 global alpha
+global lmbd
 half = 0.5
 w_ini = tuple([half] * n)
 ref = [(i + 1)/(n + 1) for i in range(n)]
@@ -19,6 +19,7 @@ def gen_walks(nset, nwalk):
     return [[walk() for i in range(nwalk)] for j in range(nset)]
 
 def process0(walk, w, dw):
+    global lmbd
     outcome, states = walk
     n = len(states)
     for t in range(n):
@@ -26,9 +27,9 @@ def process0(walk, w, dw):
         P = w[states[t]]
         j = states[t]
         dw[j] += P1 - P
-        #for k in range(t):
-        #    j = states[k]
-        #    dw[j] += (P1 - P)# * lmbd**(t - k)
+        for k in range(t):
+            j = states[k]
+            dw[j] += (P1 - P) * lmbd**(t - k)
 
 def process1(wset, w):
     w = list(w)
