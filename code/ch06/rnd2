@@ -1,0 +1,86 @@
+"${AWK=awk}" -v me=rnd '
+BEGIN {
+    srand(19)
+    ini()
+    lambda = ARGV[1]
+    alpha = ARGV[2]
+    nwalk = 5
+    nset = 1000
+    for (k = 0; k < nset; k++) {
+	ini_w()
+	compute_w()
+	sq += sqrt(rsq(w, r)/count(w))
+    }
+    printf "%.16g %.16g\n", alpha, sq/nset
+}
+
+function compute_w(   i, j, k, l, x, y, z, P, P1) {
+    for (j = 0; j < nwalk; j++) {
+	clear(d)
+	clear(z)
+	k = 0
+	for (x = 0; !(x in End); x = y) {
+	    y = step(x)
+	    P = w[x]
+	    if (y in End)
+		P1 = End[y]
+	    else
+		P1 = w[y]
+	    z[k] = x
+	    for (l = 0; l <= k; l++)
+		d[z[l]] += lambda^(k - l) * (P1 - P)
+	    k++
+	}
+	for (i in w)
+	    w[i] += alpha * d[i]
+    }
+}
+
+function ini(   i, j) {
+    eps = 1e-6
+    A = -3
+    B =  3
+    End[A] = 0
+    End[B] = 1
+    for (i = A + 1; i < B; i++)
+        r[i] = ((j++) + 1)/(B - A)
+}
+
+function show(a,    i) {
+    for (i = A + 1; i < B; i++) {
+        printf "%4.2f ", a[i]
+    }
+    printf "\n"
+}
+
+function rnd() {
+    return rand() > 1/2 ? 1 : -1
+}
+
+function step(x) {
+    return x + rnd()
+}
+
+function clear(a) {
+    split("", a)
+}
+
+function rsq(a, b,  k, s) {
+    s = 0
+    for (k in a)
+	s += (a[k] - b[k])^2
+    return s
+}
+
+function ini_w(   i) {
+    for (i = A + 1; i < B; i++)
+        w[i] = 0.5
+}
+
+function count(a,   cnt, e) {
+    for (e in a)
+	cnt++
+    return cnt
+}
+
+' "$@"
