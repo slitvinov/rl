@@ -1,39 +1,39 @@
-nawk -v me=rnd '
+"${AWK=nawk}" -v me=rnd '
 BEGIN {
+    srand(2)
+    ini()
     alpha = ARGV[1] + 0
-    nwalk = 6
-    nset = 200
+    nwalk = 5
+    nset = 100
     for (k = 0; k < nset; k++) {
-        ini()
-    for (j = 0; j < nwalk; j++) {
-        clear(d)
-        for (x = 0; !(x in End); x = y) {
-            y = step(x)
-            P = w[x]
-            if (y in End)
-                P1 = End[y]
-            else
-                P1 = w[y]
-            d[x] += P1 - P
-        }
-        for (i in w)
-            w[i] += alpha * d[i]
+        ini_w()
+	for (j = 0; j < nwalk; j++) {
+	    clear(d)
+	    for (x = 0; !(x in End); x = y) {
+		y = step(x)
+		P = w[x]
+		if (y in End)
+		    P1 = End[y]
+		else
+		    P1 = w[y]
+		d[x] += P1 - P
+	    }
+	    for (i in w)
+		w[i] += alpha * d[i]
+	}
+	sq += sqrt(rsq(w, r)/count(w))
     }
-    print rsq(w, r)
-    }
+    printf "%.16g %.16g\n", alpha, sq/nset
 }
 
-function ini(   i, n, j) {
+function ini(   i, j) {
     eps = 1e-6
     A = -3
     B =  3
     End[A] = 0
     End[B] = 1
-    n = B - A - 1
     for (i = A + 1; i < B; i++)
-        r[i] = ((j++) + 1)/(n + 1)
-    for (i = A + 1; i < B; i++)
-        w[i] = 0.5
+        r[i] = ((j++) + 1)/(B - A)
 }
 
 function show(a,    i) {
@@ -56,12 +56,21 @@ function clear(a) {
 }
 
 function rsq(a, b,  k, s) {
-    s = n = 0
-    for (k in a) {
+    s = 0
+    for (k in a)
 	s += (a[k] - b[k])^2
-        n ++
-    }
-    return sqrt(s/n)
+    return s
+}
+
+function ini_w(   i) {
+    for (i = A + 1; i < B; i++)
+        w[i] = 0.5
+}
+
+function count(a,   cnt, e) {
+    for (e in a)
+	cnt++
+    return cnt
 }
 
 ' "$@"
