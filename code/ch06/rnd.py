@@ -3,12 +3,14 @@ import math
 import itertools
 import sys
 
+random.seed(10)
 n = 5
 lmbd = 0.0
 global alpha
-w_ini = tuple([0.5] * n)
+half = 0.5
+w_ini = tuple([half] * n)
 ref = [(i + 1)/(n + 1) for i in range(n)]
-eps = 0.0000001
+eps = .000000001
 
 def step():
     return 1 if random.uniform(0, 1) > 0.5 else -1
@@ -20,38 +22,50 @@ def process0(walk, w, dw):
     outcome, states = walk
     n = len(states)
     for t in range(n):
-        for k in range(t + 1):
-            P1 = w[states[t + 1]] if t + 1 < n else outcome
-            P = w[states[t]]
-            j = states[k]
-            dw[j] += (P1 - P) * lmbd**(t - k)
+        P1 = w[states[t + 1]] if t + 1 < n else outcome
+        P = w[states[t]]
+        j = states[t]
+        dw[j] += P1 - P
+        #for k in range(t):
+        #    j = states[k]
+        #    dw[j] += (P1 - P)# * lmbd**(t - k)
 
 def process1(wset, w):
     w = list(w)
+    cnt = 0
     while True:
+        cnt += 1
         w0 = w[:]
-        dw = [ 0 ] * n
         for walk in wset:
+            dw = [ 0 ] * n
             process0(walk, w, dw)
-        for i in range(n):
-            w[i] += alpha * dw[i]/len(wset)
-        w = [max(0, e) for e in w]
-        w = [min(1, e) for e in w]
+            for i in range(len(w)):
+                w[i] += alpha * dw[i]
+            if not good(w):
+                w = [max(0, e) for e in w]
+                w = [min(1, e) for e in w]
+                sys.stderr.write("w = %s\n" % str(w))
+                #break
+        break
         e = diff(w, w0)
         if e < eps:
             break
-        if e > 10:
+        if cnt % 100000 == 0:
+            sys.stderr.write("cnt = %d, e = %g\n" % (cnt, e))
+            sys.stderr.write("dw = %s\n" % str(dw))
             sys.stderr.write("w = %s\n" % str(w))
-            sys.stderr.write("e = %g\n" % e)
-            break
+            sys.stderr.write("wset = %s\n" % str(wset))
+    #sys.stderr.write("w = %s (%.3f, %d)\n" % (fmt("%4.2f", w), rmse(ref, w), cnt))
     return w
 
 def process(nset, nwalk):
     err = 0
+    n = len(w_ini)
+    ws = 0
     for s in gen_walks(nset, nwalk):
         w = process1(s, w_ini)
-        err += rmse(ref, w)
-    return err/nset
+        ws += ssq(w, ref)
+    return math.sqrt(ws/len(w)/nset)
 
 def walk():
     x = n // 2
@@ -69,17 +83,25 @@ def diff(a, b):
     return s
 
 def rmse(a, b):
-    n = len(a)
     s = sum( (x - y)**2 for x, y in zip(a, b))
     return math.sqrt(s/len(a))
 
+def ssq(a, b):
+    return sum((x - y)**2 for x, y in zip(a, b))
+
 def sim():
     global alpha
-    al = [0.05*i for i in range(13)]
+    al = [5*i/100 for i in range(13)]
     ans = []
     for alpha in al:
         e = process(100, 10)
         print(e)
         ans.append(e)
     return alpha, ans
-    
+
+def good(w):
+    return 0 <= min(w) and max(w) <= 1
+
+def fmt(f, l):
+    l = [f % e for e in l]
+    return ' '.join(l)
