@@ -1,0 +1,2 @@
+plot [][0:0.3] \
+     "<xargs < data/alpha -n1 ./rnd2 0" w lp, "data/l.0" w l

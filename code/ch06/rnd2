@@ -1,6 +1,6 @@
-"${AWK=awk}" -v me=rnd '
+"${AWK=awk}" '
 BEGIN {
-    srand(0)
+    srand(19)
     ini()
     lambda = ARGV[1]
     alpha = ARGV[2]
@@ -9,9 +9,9 @@ BEGIN {
     for (k = 0; k < nset; k++) {
 	ini_w()
 	compute_w()
-	sq += sqrt(rsq(w, r)/count(w))
+	sq[k] = sqrt(rsq(w, r)/count(w))
     }
-    printf "%.16g %.16g\n", alpha, sq/nset
+    printf "%.16g %.16g\n", alpha, mean(sq)
 }
 
 function compute_w(   i, j, k, l, x, y, z, P, P1) {
@@ -80,6 +80,25 @@ function count(a,   cnt, e) {
     for (e in a)
 	cnt++
     return cnt
+}
+
+function mean(a,   i, y, c, t, sum, n) { # Kahan summation
+    for (i in a) {
+        y = a[i] - c
+        t = sum + y
+        c = (t - sum) - y
+        sum = t
+        n++
+    }
+    return sum/n
+}
+
+function mean0(a,   i, n, sum) {
+    for (i in a) {
+        sum += a[i]
+        n++
+    }
+    return sum/n
 }
 
 ' "$@"
