@@ -17,7 +17,6 @@ BEGIN {
 function compute_w(   i, j, k, l, x, y, z, P, P1) {
     for (j = 0; j < nwalk; j++) {
 	clear(d)
-	clear(z)
 	k = 0
 	for (x = 0; !(x in End); x = y) {
 	    y = step(x)
@@ -74,7 +73,7 @@ function rsq(a, b,  k, s) {
 
 function ini_w(   i) {
     for (i = A + 1; i < B; i++)
-        w[i] = 0.5
+        w[i] = 1/2
 }
 
 function count(a,   cnt, e) {
