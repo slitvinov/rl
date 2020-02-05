@@ -1,7 +1,7 @@
 "${AWK=awk}" '
 BEGIN {
-    srand(19)
     ini()
+    srand(0)
     lambda = ARGV[1]
     alpha = ARGV[2]
     nwalk = 5
@@ -11,7 +11,7 @@ BEGIN {
 	compute_w()
 	sq[k] = sqrt(rsq(w, r)/count(w))
     }
-    printf "%.16g %.16g\n", alpha, mean(sq)
+    printf "%.32e %.32e\n", alpha, sum(sq)/count(sq)
 }
 
 function compute_w(   i, j, k, l, x, y, z, P, P1) {
@@ -82,15 +82,14 @@ function count(a,   cnt, e) {
     return cnt
 }
 
-function mean(a,   i, y, c, t, sum, n) { # Kahan summation
+function sum(a,   i, y, c, t, s) { # Kahan summation
     for (i in a) {
         y = a[i] - c
-        t = sum + y
-        c = (t - sum) - y
-        sum = t
-        n++
+        t = s + y
+        c = (t - s) - y
+        s = t
     }
-    return sum/n
+    return s
 }
 
 function mean0(a,   i, n, sum) {
