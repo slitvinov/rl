@@ -92,12 +92,4 @@ function sum(a,   i, y, c, t, s) { # Kahan summation
     return s
 }
 
-function mean0(a,   i, n, sum) {
-    for (i in a) {
-        sum += a[i]
-        n++
-    }
-    return sum/n
-}
-
 ' "$@"
