@@ -1,17 +1,15 @@
-"${AWK=awk}" -v me=rnd '
+"${AWK=awk}" '
 BEGIN {
-    srand(0)
+    srand()
     ini()
     lambda = ARGV[1]
     alpha = ARGV[2]
-    nwalk = 5
-    nset = 100
     for (k = 0; k < nset; k++) {
 	ini_w()
 	compute_w()
-	sq += sqrt(rsq(w, r)/count(w))
+	sq[k] = sqrt(rsq(w, r)/count(w))
     }
-    printf "%.16g %.16g\n", alpha, sq/nset
+    printf "%.16g %.16g\n", alpha, mean(sq)
 }
 
 function compute_w(   i, j, k, l, x, y, z, P, P1) {
@@ -36,7 +34,8 @@ function compute_w(   i, j, k, l, x, y, z, P, P1) {
 }
 
 function ini(   i, j) {
-    eps = 1e-6
+    nwalk = 10
+    nset = 1000
     A = -3
     B =  3
     End[A] = 0
@@ -80,6 +79,14 @@ function count(a,   cnt, e) {
     for (e in a)
 	cnt++
     return cnt
+}
+
+function mean(a,  k, s, n) {
+    for (k in a) {
+	s += a[k]
+	n ++
+    }
+    return s/n
 }
 
 ' "$@"
