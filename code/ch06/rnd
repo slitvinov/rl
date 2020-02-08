@@ -1,8 +1,8 @@
 "${AWK=awk}" -v me=rnd '
 BEGIN {
-    srand(19)
+    srand(0)
     ini()
-    alpha = ARGV[1] + 0
+    alpha = ARGV[1]
     nwalk = 5
     nset = 100
     for (k = 0; k < nset; k++) {
@@ -27,7 +27,6 @@ BEGIN {
 }
 
 function ini(   i, j) {
-    eps = 1e-6
     A = -3
     B =  3
     End[A] = 0

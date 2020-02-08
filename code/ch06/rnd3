@@ -14,21 +14,22 @@ BEGIN {
     printf "%.16e %.16e\n", alpha, sum(sq)/count(sq)
 }
 
-function compute_w(   i, j, k, l, x, y, z, P, P1) {
+function compute_w(   i, j, l, m, x, y, P, P1, d, e) {
     for (j = 0; j < nwalk; j++) {
 	clear(d)
-	k = 0
+	clear(e)
 	for (x = 0; !(x in End); x = y) {
 	    y = x + rnd()
 	    if (y in End)
 		P1 = End[y]
 	    else
 		P1 = w[y]
-	    z[k] = x
 	    P = w[x]
-	    for (l = 0; l <= k; l++)
-		d[z[l]] += lambda^(k - l) * (P1 - P)
-	    k++
+	    for (m = A + 1; m < B; m++)		
+		d[m] += (P1 - P) * e[m]
+	    for (m = A + 1; m < B; m++)
+	    	e[m] = lambda * e[m]
+	    e[y] = 1
 	}
 	for (i in w)
 	    w[i] += alpha * d[i]
