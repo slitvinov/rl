@@ -1,0 +1,6 @@
+set key off
+plot [][0:0.8] \
+     "<xargs < data/alpha -n1 ./rnd2 0" w lp, "data/l.0" w l, \
+     "<xargs < data/alpha -n1 ./rnd2 0.3" w lp, "data/l.0.3" w l, \
+     "<xargs < data/alpha -n1 ./rnd2 0.8" w lp, "data/l.0.8" w l, \
+     "<xargs < data/alpha -n1 ./rnd2 1" w lp, "data/l.1" w l

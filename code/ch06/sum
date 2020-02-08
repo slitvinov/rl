@@ -1,0 +1,28 @@
+"${AWK=awk}" '
+BEGIN {
+    eps = 1
+    while (1 + eps != 1) {
+      eps /= 2
+    }
+    a[0] = 1
+    a[2] = eps
+    a[3] = -eps
+    printf "%.16e\n%.16e\n", sum(a),  sum0(a)
+}
+
+function sum(a,   i, y, c, t, s) { # Kahan summation
+    for (i = 0; i in a; i++) {
+        y = a[i] - c
+        t = s + y
+        c = (t - s) - y
+        s = t
+    }
+    return s
+}
+
+function sum0(a,   i, n, s) {
+    for (i in a)
+        s += a[i]
+    return s
+}
+' "$@"
