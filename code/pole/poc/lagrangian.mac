@@ -41,5 +41,3 @@ printf(true, "~a;~%", A(i, j) = %A[i,j]),
 for i: 1 thru n do
 printf(true, "~a;~%", b(i) = %A[i, n+1]),
 printf(true, "~a;~%", det = determinant(%B)));
-
-factor(%B^^(-1) . [b(1), b(2)]);
