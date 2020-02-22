@@ -1,6 +1,29 @@
 #include <math.h>
+#include "pole.h"
 
 static const double eps = 1e-14;
+
+int
+pole_rhs(double time, const double y[4], double dy[4], void *param)
+{
+  enum {T = POLE_T, DT = POLE_DT, X = POLE_X, DX = POLE_DX};
+  (void)(time);
+  double ddt, ddx;
+  double mc, F, t, dt;
+  struct PoleParam *p;
+  p = param;
+  mc = p->mc;
+  F = p->F;
+  t = y[T];
+  dt = y[DT];
+  if (pole_rhs0(mc, F, t, dt, &ddt, &ddx) != 0)
+    return 1;
+  dy[T] = y[DT];
+  dy[X] = y[DX];
+  dy[DT] = ddt;
+  dy[DX] = ddx;
+  return 0;
+}
 
 int
 pole_rhs0(double mc, double F, double t, double dt, double *ddt,

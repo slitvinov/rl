@@ -1,5 +1,5 @@
 .POSIX:
-.SUFFIXES: .c .o .a60
+.SUFFIXES: .c .o
 .PHONY: all lint clean
 
 M_LDFLAGS = -static  -L../lib -lpole -lm
@@ -9,7 +9,8 @@ CFLAGS = -Og -g
 LINK = $(CC)
 MARST = marst
 M = \
-rhs0 \
+rhs0\
+rhs\
 
 all: $M
 .o:; $(LINK) $< $(M_LDFLAGS) $(LDFLAGS) -o $@

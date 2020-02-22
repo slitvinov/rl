@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <pole.h>
 
-static const char *me = "rhs0";
+static const char *me = "rhs";
 static void
 usg(void)
 {
@@ -13,8 +13,11 @@ usg(void)
 int
 main(int argc, char **argv)
 {
+    enum {T = POLE_T, DT = POLE_DT, X = POLE_X, DX = POLE_DX};
     double mc, F, t, dt;
-    double ddt, ddx;
+    struct PoleParam p;
+    double time;
+    double y[POLE_N], dy[POLE_N];
     (void)argc;
     mc = F = t = dt = 0;
     while (*++argv != NULL && argv[0][0] == '-')
@@ -26,7 +29,7 @@ main(int argc, char **argv)
 	argv++;
 	if (*argv == NULL) {
 	  fprintf(stderr, "%s: -m needs an argument\n", me);
-	  exit(2);	  
+	  exit(2);
 	}
 	mc = atof(*argv);
 	break;
@@ -34,7 +37,7 @@ main(int argc, char **argv)
 	argv++;
 	if (*argv == NULL) {
 	  fprintf(stderr, "%s: -f needs an argument\n", me);
-	  exit(2);	  
+	  exit(2);
 	}
 	F = atof(*argv);
 	break;
@@ -42,7 +45,7 @@ main(int argc, char **argv)
 	argv++;
 	if (*argv == NULL) {
 	  fprintf(stderr, "%s: -t needs an argument\n", me);
-	  exit(2);	  
+	  exit(2);
 	}
 	t = atof(*argv);
 	break;
@@ -50,18 +53,28 @@ main(int argc, char **argv)
 	argv++;
 	if (*argv == NULL) {
 	  fprintf(stderr, "%s: -d needs an argument\n", me);
-	  exit(2);	  
+	  exit(2);
 	}
 	dt = atof(*argv);
 	break;
       default:
 	fprintf(stderr, "%s: unknown option '%s'\n", me, argv[0]);
-        exit(2);
+	exit(2);
       }
-    if (pole_rhs0(mc, F, t, dt, &ddt, &ddx) != 0) {
-      fprintf(stderr, "%s: pole_rhs0 failed\n", me);
+    p.F = F;
+    p.mc = mc;
+    y[T] = t;
+    y[DT] = dt;
+    y[X] = 0;
+    y[DX] = 0;
+    time = 0;
+    if (pole_rhs(time, y, dy, &p) != 0) {
+      fprintf(stderr, "%s: pole_rhs failed\n", me);
       exit(2);
     }
-    printf("%+.16e\n", ddt);
-    printf("%+.16e\n", ddx);    
+    printf("%+.16e\n", dy[T]);
+    printf("%+.16e\n", dy[DT]);
+    printf("%+.16e\n", dy[X]);
+    printf("%+.16e\n", dy[DX]);
+    return 0;
 }
