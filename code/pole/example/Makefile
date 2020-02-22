@@ -2,18 +2,21 @@
 .SUFFIXES: .c .o
 .PHONY: all lint clean
 
-M_LDFLAGS = -static  -L../lib -lpole -lm
+GSL_LDFLAGS = `gsl-config --libs`
+
+M_LDFLAGS = -L../lib -lpole -lm
 M_CFLAGS = -I../lib
 
 CFLAGS = -Og -g
 LINK = $(CC)
 MARST = marst
 M = \
+ode\
 rhs0\
 rhs\
 
 all: $M
-.o:; $(LINK) $< $(M_LDFLAGS) $(LDFLAGS) -o $@
+.o:; $(LINK) $< $(M_LDFLAGS) $(GSL_LDFLAGS) $(LDFLAGS) -o $@
 .c.o:; $(CC) $(M_CFLAGS) $(CFLAGS) $< -c
 .c:
 %: %.c
