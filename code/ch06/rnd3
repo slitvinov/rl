@@ -1,8 +1,8 @@
 "${AWK=awk}" '
 BEGIN {
     srand(19)
-    nwalk = 5
-    nset = 100
+    nwalk = 1
+    nset = 1
     lambda = ARGV[1] 
     alpha = ARGV[2]
     ini()
@@ -20,16 +20,13 @@ function compute_w(   i, j, l, m, x, y, P, P1, d, e) {
 	clear(e)
 	for (x = 0; !(x in End); x = y) {
 	    y = x + rnd()
-	    if (y in End)
-		P1 = End[y]
-	    else
-		P1 = w[y]
+	    P1 = (y in End) ? End[y] : w[y]
 	    P = w[x]
 	    for (m = A + 1; m < B; m++)		
 		d[m] += (P1 - P) * e[m]
 	    for (m = A + 1; m < B; m++)
-	    	e[m] = lambda * e[m]
-	    e[y] = 1
+		e[m] *= lambda
+	    e[y] ++
 	}
 	for (i in w)
 	    w[i] += alpha * d[i]
@@ -57,7 +54,7 @@ function rnd() {
 }
 
 function clear(a) {
-    split("", a)
+    delete a
 }
 
 function rsq(a, b,  k, s) {

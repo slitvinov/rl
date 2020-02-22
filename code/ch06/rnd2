@@ -1,8 +1,8 @@
 "${AWK=awk}" '
 BEGIN {
     srand(19)
-    nwalk = 5
-    nset = 100
+    nwalk = 1
+    nset = 1
     lambda = ARGV[1] 
     alpha = ARGV[2]
     ini()
@@ -20,14 +20,11 @@ function compute_w(   i, j, k, l, x, y, z, P, P1) {
 	k = 0
 	for (x = 0; !(x in End); x = y) {
 	    y = x + rnd()
-	    if (y in End)
-		P1 = End[y]
-	    else
-		P1 = w[y]
+	    P1 = (y in End) ? End[y] : w[y]
 	    z[k] = x
 	    P = w[x]
 	    for (l = 0; l <= k; l++)
-		d[z[l]] += lambda^(k - l) * (P1 - P)
+		d[z[l]] += (P1 - P) * lambda^(k - l)
 	    k++
 	}
 	for (i in w)
