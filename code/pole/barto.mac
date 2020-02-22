@@ -1,0 +1,14 @@
+dd(t) =
+(
+    g*sin(t)
+    +     cos(t)
+        * (-F-mp*l*d(t)^2*sin(t)+muc*sgn(d(x))/(mc+mp))
+    - mup*d(t)/(mp*l)
+)      
+/
+(l*(4/3-mp*cos(t)^2/(mc+mp)));
+
+dd(x) =
+(F + mp*l*(d(t)^2*sin(t) - dd(t)*cos(t)) - muc*sgn(d(x)))
+/
+(mc + mp);

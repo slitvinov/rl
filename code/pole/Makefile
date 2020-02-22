@@ -1,5 +1,6 @@
 .POSIX:
-M = pole
+M = \
+pole\
 
 LINK = $(CC)
 M_LDFLAGS = -lm

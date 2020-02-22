@@ -157,7 +157,7 @@ main()
     printf("Pole balanced successfully for at least %d steps\n", steps);
 }
 
-
+
 /*----------------------------------------------------------------------
    cart_pole:  Takes an action (0 or 1) and the current values of the
  four state variables and updates their values by estimating the state
@@ -201,7 +201,7 @@ cart_pole(int action, float *x, float *x_dot, float *theta, float *theta_dot)
     *theta += TAU * *theta_dot;
     *theta_dot += TAU * thetaacc;
 }
-
+
 /*----------------------------------------------------------------------
    get_box:  Given the current state, returns a number from 1 to 162
   designating the region of the state space encompassing the current state.
@@ -244,90 +244,3 @@ get_box(float x, float x_dot, float theta, float theta_dot)
 
   return(box);
 }
-
-/*----------------------------------------------------------------------
-  Result of:  cc -o pole pole.c -lm          (assuming this file is pole.c)
-              pole
-----------------------------------------------------------------------*/
-/*  
-Trial 1 was 21 steps.
-Trial 2 was 12 steps.
-Trial 3 was 28 steps.
-Trial 4 was 44 steps.
-Trial 5 was 15 steps.
-Trial 6 was 9 steps.
-Trial 7 was 10 steps.
-Trial 8 was 16 steps.
-Trial 9 was 59 steps.
-Trial 10 was 25 steps.
-Trial 11 was 86 steps.
-Trial 12 was 118 steps.
-Trial 13 was 218 steps.
-Trial 14 was 290 steps.
-Trial 15 was 19 steps.
-Trial 16 was 180 steps.
-Trial 17 was 109 steps.
-Trial 18 was 38 steps.
-Trial 19 was 13 steps.
-Trial 20 was 144 steps.
-Trial 21 was 41 steps.
-Trial 22 was 323 steps.
-Trial 23 was 172 steps.
-Trial 24 was 33 steps.
-Trial 25 was 1166 steps.
-Trial 26 was 905 steps.
-Trial 27 was 874 steps.
-Trial 28 was 758 steps.
-Trial 29 was 758 steps.
-Trial 30 was 756 steps.
-Trial 31 was 165 steps.
-Trial 32 was 176 steps.
-Trial 33 was 216 steps.
-Trial 34 was 176 steps.
-Trial 35 was 185 steps.
-Trial 36 was 368 steps.
-Trial 37 was 274 steps.
-Trial 38 was 323 steps.
-Trial 39 was 244 steps.
-Trial 40 was 352 steps.
-Trial 41 was 366 steps.
-Trial 42 was 622 steps.
-Trial 43 was 236 steps.
-Trial 44 was 241 steps.
-Trial 45 was 245 steps.
-Trial 46 was 250 steps.
-Trial 47 was 346 steps.
-Trial 48 was 384 steps.
-Trial 49 was 961 steps.
-Trial 50 was 526 steps.
-Trial 51 was 500 steps.
-Trial 52 was 321 steps.
-Trial 53 was 455 steps.
-Trial 54 was 646 steps.
-Trial 55 was 1579 steps.
-Trial 56 was 1131 steps.
-Trial 57 was 1055 steps.
-Trial 58 was 967 steps.
-Trial 59 was 1061 steps.
-Trial 60 was 1009 steps.
-Trial 61 was 1050 steps.
-Trial 62 was 4815 steps.
-Trial 63 was 863 steps.
-Trial 64 was 9748 steps.
-Trial 65 was 14073 steps.
-Trial 66 was 9697 steps.
-Trial 67 was 16815 steps.
-Trial 68 was 21896 steps.
-Trial 69 was 11566 steps.
-Trial 70 was 22968 steps.
-Trial 71 was 17811 steps.
-Trial 72 was 11580 steps.
-Trial 73 was 16805 steps.
-Trial 74 was 16825 steps.
-Trial 75 was 16872 steps.
-Trial 76 was 16827 steps.
-Trial 77 was 9777 steps.
-Trial 78 was 19185 steps.
-Trial 79 was 98799 steps.
-Pole balanced successfully for at least 100001 steps
-*/

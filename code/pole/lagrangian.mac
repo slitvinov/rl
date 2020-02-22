@@ -1,0 +1,45 @@
+d(e)::= buildq([L: [l, mp, mc, g, z], e],
+  block(local(splice(L)),
+    declare(L, constant),
+  diff(e)));
+tellsimpafter('del(x), dx);
+tellsimpafter('del(t), dt);
+tellsimpafter('del(dx), ddx);
+tellsimpafter('del(dt), ddt);
+
+x1: x;
+x2: x + z*sin(t);
+y2: z*cos(t);
+
+t0: mp/(2*l)*(d(x2)^2 + d(y2)^2)/2;
+K2: integrate(t0, z, 0, 2*l);
+K1: mc*d(x1)^2/2;
+
+p0: mp/(2*l)*y2*g;
+P: integrate(p0, z, 0, 2*l);
+
+K: trigsimp(K1 + K2);
+L: K - P;
+
+%q: [d(diff(L, d(x))) - diff(L, x) - F,
+     d(diff(L, d(t))) - diff(L, t)];
+%q: trigsimp(%q);
+%s: linsolve(%q, [ddt, ddx]);
+
+%q0 : %q, l = 1, g = 1, mp = 1;
+A(i, j):=concat('A, i, j);
+b(i):=concat('b, i);
+%v: [ddt, ddx];
+n: length(%v);
+%B: genmatrix(lambda([i, j], A(i, j)), n, n);
+%A: augcoefmatrix(%q0, %v);
+
+with_stdout("lagrangian0.c",
+for i: 1 thru n do
+for j: 1 thru n do
+printf(true, "~a;~%", A(i, j) = %A[i,j]),
+for i: 1 thru n do
+printf(true, "~a;~%", b(i) = %A[i, n+1]),
+printf(true, "~a;~%", det = determinant(%B)));
+
+factor(%B^^(-1) . [b(1), b(2)]);

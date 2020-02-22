@@ -1,0 +1,14 @@
+%E: [
+dd(t) = (g*sin(t) + cos(t)*((-F - mp*l*d(t)^2*sin(t))/(mc + mp)))
+/
+(l*(4/3-mp*cos(t)^2/(mc+mp))),
+dd(x) = (F + mp*l*(d(t)^2*sin(t) - dd(t)*cos(t)))/(mc + mp)];
+
+
+/*
+                                      2
+                                  3 dt  cos(t) sin(t)
+(%o49)                    dd(t) = -------------------
+                                          2
+                                     3 cos (t) - 4
+*/
