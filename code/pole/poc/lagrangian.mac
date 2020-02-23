@@ -34,6 +34,8 @@ n: length(%v);
 %B: genmatrix(lambda([i, j], A(i, j)), n, n);
 %A: augcoefmatrix(%q0, %v);
 
+/* %A: ratexpand(taylor(%A, [t, dt], [0, 0], 1)); */
+
 with_stdout("lagrangian0.c",
 for i: 1 thru n do
 for j: 1 thru n do

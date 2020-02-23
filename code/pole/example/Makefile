@@ -12,8 +12,9 @@ LINK = $(CC)
 MARST = marst
 M = \
 ode\
-rhs0\
 rhs\
+rhs0\
+traj\
 
 all: $M
 .o:; $(LINK) $< $(M_LDFLAGS) $(GSL_LDFLAGS) $(LDFLAGS) -o $@

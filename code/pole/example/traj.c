@@ -4,7 +4,7 @@
 
 static const double STEP = 1e-6;
 
-static const char *me = "ode";
+static const char *me = "traj";
 static void
 usg(void)
 {
@@ -23,13 +23,23 @@ main(int argc, char **argv)
     struct ODE *ode;
     double time;
     int type;
+    int nstep;
 
     (void) argc;
     mc = F = t = dt = x = 0;
+    nstep = 10;
     while (*++argv != NULL && argv[0][0] == '-')
         switch (argv[0][1]) {
         case 'h':
             usg();
+            break;
+        case 'n':
+            argv++;
+            if (*argv == NULL) {
+                fprintf(stderr, "%s: -n needs an argument\n", me);
+                exit(2);
+            }
+            nstep = atoi(*argv);
             break;
         case 'e':
             argv++;
@@ -96,13 +106,21 @@ main(int argc, char **argv)
         fprintf(stderr, "%s: ode_ini failed\n", me);
         exit(2);
     };
-    if (ode_step(ode, tend, &time, y) != 0) {
-        fprintf(stderr, "%s: ode_step failed\n", me);
-        exit(2);
-    }
     printf("time theta dtheta x dx\n");
-    printf("%.16e %.16e %.16e %.16e %.16e\n",
-           time, y[T], y[DT], y[X], y[DX]);
+    double dstep;
+    int i;
+
+    for (i = 1;; i++) {
+        dstep = i * tend / nstep;
+        printf("%.16e %.16e %.16e %.16e %.16e\n",
+               time, y[T], y[DT], y[X], y[DX]);
+        if (i > nstep)
+            break;
+        if (ode_step(ode, dstep, &time, y) != 0) {
+            fprintf(stderr, "%s: ode_step failed\n", me);
+            exit(2);
+        }
+    }
     ode_fin(ode);
     return 0;
 }

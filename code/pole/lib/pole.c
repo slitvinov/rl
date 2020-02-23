@@ -54,6 +54,28 @@ pole_rhs0(double mc, double F, double t, double dt, double *ddt,
     return 0;
 }
 
+int
+pole_rhs_linear(double mc, double F, double t, double dt, double *ddt,
+                double *ddx)
+{
+    double A11, A12, A21, A22;
+    double b1, b2;
+    double det;
+
+    A11 = 1;
+    A12 = mc + 1;
+    A21 = 4.0 / 3;
+    A22 = 1;
+    b1 = -F;
+    b2 = -t;
+    det = A11 * A22 - A12 * A21;
+    if (fabs(det) < eps)
+        return 1;
+    *ddt = (A12 * b2 - A22 * b1) / det;
+    *ddx = -(A11 * b2 - A21 * b1) / det;
+    return 0;
+}
+
 static const int Type[] = {
     POLE_RK2,
     POLE_RK4,
@@ -100,7 +122,7 @@ ode_ini(int type, double dt, void *param, struct ODE **pq)
     sys->params = param;
     d = gsl_odeiv2_driver_alloc_y_new(sys, *Stype[i], dt, EPSABS, EPSREL);
     if (d == NULL)
-      return 1;
+        return 1;
     q->d = d;
     *pq = q;
     return 0;
@@ -110,6 +132,7 @@ int
 ode_step(struct ODE *q, double tstep, double *time, double y[])
 {
     int status;
+
     status = gsl_odeiv2_driver_apply(q->d, time, tstep, y);
     if (status != GSL_SUCCESS)
         return 1;
