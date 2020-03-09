@@ -6,11 +6,15 @@ import numpy
 import math
 
 x0 = 1
-M = 200
-N = 1
+M = 100
+N = 10
 
-a = 0.1
-b = 0.4
+a = 0.01
+b = 0.04
+def g(y):
+    return y*y
+def h(y):
+    return y*y
 
 class Tab(object):
     def __init__(self, x, y):
@@ -25,10 +29,6 @@ class Inv(object):
     def __call__(self, *arg):
         return -self.f(*arg)
 
-def g(y):
-    return - y ** 2
-def h(y):
-    return - (y  - 0.5) ** 2
 
 def fun0(y, x):
     return  g(y) + h(x - y)
@@ -65,9 +65,9 @@ yy.reverse()
 x = x0
 i = 0
 while True:
-    yn = y.f(x)
+    yn = yy[i].f(x)
     print(yn)
     if i == N - 1:
         break
-    x = fun0(yn, x)
+    x = a*yn + b*(x - yn)
     i += 1

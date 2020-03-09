@@ -1,11 +1,19 @@
 g(y) := -y**2;
-h(y) := -(y - 1/2)**2;
+h(y) := -y ** 2 - y;
+
+%v: [a = 0.1, b = 0.2];
 
 x: 1;
-
 R(y, y1):= block([
     x1 : a * y + b * (x -  y)],
   g(y) + h(x - y) + g(y1) + h(x1 - y1));
 
 %q: [diff(R(y, y1), y), diff(R(y, y1), y1)];
 %s: solve(%q, [y, y1]);
+
+%s, %v;
+
+R0: R(y, y1);
+R0, %s, %v, infeval;
+R0, %s, a = 0.1, b = 0.2, infeval;
+
